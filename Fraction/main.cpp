@@ -1,10 +1,10 @@
-#include<iostream>
+п»ї#include<iostream>
 using namespace std;
 
 class Fraction
 {
-	int numerator; //числитель
-	int denominator; //знаминатель
+	int numerator; //С‡РёСЃР»РёС‚РµР»СЊ
+	int denominator; //Р·РЅР°РјРёРЅР°С‚РµР»СЊ
 
 public:
 	/*Getters*/
