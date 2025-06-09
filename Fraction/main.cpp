@@ -3,8 +3,8 @@ using namespace std;
 
 class Fraction
 {
-	int numerator;//числитель
-	int denominator;//знаминатель
+	int numerator; //числитель
+	int denominator; //знаминатель
 
 public:
 	/*Getters*/
