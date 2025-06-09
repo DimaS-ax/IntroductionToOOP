@@ -190,8 +190,10 @@ void main()
 {
 	setlocale(LC_ALL, "ru");
 
-	Fraction A(10, 8);
-	Fraction B(5, 4);
-	Fraction C = A + B;
-	C.print();
+	Fraction A(4, 7);
+	Fraction B(4, 7);
+
+	bool result = A != B;
+	
+
 }
