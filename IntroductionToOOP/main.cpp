@@ -48,6 +48,7 @@ public:
 
 	//Point(const Point& other) = delete;// запрет копирования объектов
 
+	//CopyConstructor;
 	Point(const Point& other)
 	{
 		//this - этот объект
