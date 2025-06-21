@@ -270,6 +270,7 @@ std::istream& operator >>(std::istream& is,  Fraction& obj)
 //#define INCREMENT_DECREMENT
 //#define COMPARISON_OPERATOR
 //#define OSTREAM_OPERATOR
+//#define ISTREAM_OPERATORS
 void main()
 {
 	setlocale(LC_ALL, "ru");
@@ -338,9 +339,12 @@ void main()
 	cout << A << endl;
 #endif // OSTREAM_OPERATOR
 
+#ifdef ISTREAM_OPERATORS
 	Fraction A;
 	cout << "Введите простую дробь: "; cin >> A;
 	cout << A << endl;
+#endif // ISTREAM_OPERATORS
+
 
 	
 }
