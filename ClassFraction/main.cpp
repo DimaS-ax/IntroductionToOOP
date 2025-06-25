@@ -1,11 +1,16 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 using namespace std;
+using std::cin;
+using std::cout;
+using std::endl;
 
 #define delimetr "\n------------------------------------\n"
 class Fraction;
 Fraction operator *(Fraction left, Fraction right);
 Fraction operator /(const Fraction& left, const Fraction& right);
+Fraction operator+(const Fraction& left, const Fraction& right);
+Fraction operator-(const Fraction& left, const Fraction& right);
 class Fraction 
 {
 	int integer;//целочисленное
@@ -45,12 +50,12 @@ public:
 		this->denominator = 1;
 		cout << "DefaultConstruction:\t" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
 		this->denominator = 1;
-		cout << "Construction:\t\t" << this << endl;
+		cout << "SingleArgConstruction:\t" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
 	{
@@ -93,6 +98,14 @@ public:
 	Fraction& operator /=(const Fraction& other)
 	{
 		return *this = *this / other;
+	}
+	Fraction& operator +=(const Fraction& other)
+	{
+		return *this = *this + other;
+	}
+	Fraction& operator -=(const Fraction& other)
+	{
+		return *this = *this - other;
 	}
 	/*Increment and Decrement*/
 	Fraction& operator ++() //Prefix increment
@@ -138,6 +151,27 @@ public:
 		swap(inverted.numerator, inverted.denominator);
 		return inverted;
 	}
+	int commonDinominator(int numerator, int denominator)const
+	{
+		while (denominator != 0)
+		{
+			int bufer = denominator;
+			denominator = numerator % denominator;
+			numerator = bufer;
+		}
+		return numerator;
+	}
+	void simplify()
+	{
+		int buffer = commonDinominator(numerator, denominator);
+		numerator /= buffer;
+		denominator /= buffer;
+		if (denominator < 0)
+		{
+			denominator = -denominator;
+			numerator = -numerator;
+		}
+	}
 
 	void Print()const
 	{
@@ -176,7 +210,25 @@ Fraction operator /(const Fraction& left, const Fraction& right)
 {
 	return left * right.inverted();
 }
+Fraction operator+(const Fraction& left, const Fraction& right)
+{
+	int commonDenominator = left.get_denominator() * right.get_denominator();
+	int newNumerator = left.get_denominator() * right.get_numerator() +
+					   left.get_numerator() * right.get_denominator();
+	Fraction result(newNumerator, commonDenominator);
+	result.simplify();
+	return result;
+}
+Fraction operator-(const Fraction& left, const Fraction& right)
+{
+	int commonDenominator = left.get_denominator() * right.get_denominator();
+	int newNumerator = left.get_numerator() * right.get_denominator() -
+		left.get_denominator() * right.get_numerator();
 
+	Fraction result(newNumerator, commonDenominator);
+	result.simplify();
+	return result;
+}
 /*Comparison Operators*/
 bool operator==(Fraction left, Fraction right)
 {
@@ -190,14 +242,6 @@ bool operator !=(const Fraction left, const Fraction right)
 {
 	return !(left == right);
 }
-bool operator <(Fraction left, Fraction right)
-{
-	left.to_improper();
-	right.to_improper();
-	return
-		left.get_numerator() * right.get_denominator() <
-		right.get_numerator() * left.get_denominator();
-}
 bool operator >(Fraction left, Fraction right)
 {
 	left.to_improper();
@@ -206,21 +250,21 @@ bool operator >(Fraction left, Fraction right)
 		left.get_numerator() * right.get_denominator() >
 		right.get_numerator() * left.get_denominator();
 }
-bool operator <=(Fraction left, Fraction right)
+bool operator <(Fraction left, Fraction right)
 {
 	left.to_improper();
 	right.to_improper();
 	return
-		left.get_numerator() * right.get_denominator() <=
+		left.get_numerator() * right.get_denominator() <
 		right.get_numerator() * left.get_denominator();
 }
 bool operator >=(Fraction left, Fraction right)
 {
-	left.to_improper();
-	right.to_improper();
-	return
-		left.get_numerator() * right.get_denominator() >=
-		right.get_numerator() * left.get_denominator();
+	return !(left < right);
+}
+bool operator <=(Fraction left, Fraction right)
+{
+	return !(left > right);
 }
 
 std::ostream& operator<<(std::ostream& os, const Fraction& obj)
@@ -257,7 +301,7 @@ std::istream& operator >>(std::istream& is,  Fraction& obj)
 	/*for (int i = 0; i < n; i++)cout << numbers[i] << "\t"; cout << endl;*/
 	switch(n)
 	{
-		case 1:obj = numbers[0]; break;
+		case 1:obj = (Fraction)numbers[0]; break;
 		case 2:obj = Fraction(numbers[0], numbers[1]); break;
 		case 3:obj = Fraction(numbers[0], numbers[1], numbers[2]); break;
 	}
@@ -271,6 +315,8 @@ std::istream& operator >>(std::istream& is,  Fraction& obj)
 //#define COMPARISON_OPERATOR
 //#define OSTREAM_OPERATOR
 //#define ISTREAM_OPERATORS
+//#define CONVERSION_BASICS
+//#define CONVERSION_FROM_OTHER_TO_CLASS
 void main()
 {
 	setlocale(LC_ALL, "ru");
@@ -345,6 +391,25 @@ void main()
 	cout << A << endl;
 #endif // ISTREAM_OPERATORS
 
+#ifdef CONVERSION_BASICS
+	int a = 2;// No conversions
+	double b = 3;// Implicit conversion from less to more('int' to 'double')
+	int c = b;//Implicit conversion from more to less without data loss
+	int d = 4.5;//Implicit conversion from more to less with data loss  
+#endif // CONVERSION_BASICS
+
+#ifdef CONVERSION_FROM_OTHER_TO_CLASS
+	Fraction A = (Fraction)5; // Implicit conversion from less to more
+	cout << A << endl;
+
+	Fraction B;
+	cout << delimetr;
+	B = Fraction(8);
+	cout << delimetr;
+	cout << B << endl;
+#endif // CONVERSION_FROM_OTHER_TO_CLASS
 
 	
+	
+
 }
