@@ -409,7 +409,5 @@ void main()
 	cout << B << endl;
 #endif // CONVERSION_FROM_OTHER_TO_CLASS
 
-	
-	
 
 }
