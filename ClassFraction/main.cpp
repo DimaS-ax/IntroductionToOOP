@@ -57,6 +57,21 @@ public:
 		this->denominator = 1;
 		cout << "SingleArgConstruction:\t" << this << endl;
 	}
+
+	Fraction(double num)
+	{
+		int NUM = (int)num;
+		double res = num - NUM;
+		int denominator = 10000;
+		int numerator = res * denominator;
+		int commonDenominator = gcd(numerator, denominator);
+		numerator /= commonDenominator;
+		denominator /= commonDenominator;
+		this->integer = NUM;
+		this->numerator = numerator;
+		this->denominator = denominator;
+	}
+
 	Fraction(int numerator, int denominator)
 	{
 		set_integer (0);
@@ -317,6 +332,7 @@ std::istream& operator >>(std::istream& is,  Fraction& obj)
 //#define ISTREAM_OPERATORS
 //#define CONVERSION_BASICS
 //#define CONVERSION_FROM_OTHER_TO_CLASS
+#define DECIMAL_TO_FRACTION
 void main()
 {
 	setlocale(LC_ALL, "ru");
@@ -408,6 +424,16 @@ void main()
 	cout << delimetr;
 	cout << B << endl;
 #endif // CONVERSION_FROM_OTHER_TO_CLASS
+
+#ifdef DECIMAL_TO_FRACTION
+
+	Fraction A = 2.75;
+	cout << A << endl;
+	cout << delimetr;
+	Fraction B = 5.5;
+	cout << B << endl;
+
+#endif // DECIMAL_TO_FRACTION
 
 
 }
