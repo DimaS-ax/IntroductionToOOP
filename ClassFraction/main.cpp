@@ -151,7 +151,7 @@ public:
 		swap(inverted.numerator, inverted.denominator);
 		return inverted;
 	}
-	int commonDinominator(int numerator, int denominator)const
+	int gcd(int numerator, int denominator)const
 	{
 		while (denominator != 0)
 		{
@@ -163,7 +163,7 @@ public:
 	}
 	void simplify()
 	{
-		int buffer = commonDinominator(numerator, denominator);
+		int buffer = gcd(numerator, denominator);
 		numerator /= buffer;
 		denominator /= buffer;
 		if (denominator < 0)
