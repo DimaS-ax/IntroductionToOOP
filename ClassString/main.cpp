@@ -1,4 +1,5 @@
-﻿#include<iostream>
+﻿#include<Windows.h>
+#include<iostream>
 using namespace std;
 using std::cout;
 using std::endl;
@@ -101,11 +102,26 @@ std::ostream& operator<<(std::ostream& os, const String& obj)
 	return os << obj.get_str();
 }
 
+std::istream& operator>>(std::istream& cin, String& obj)
+{
+	const int SIZE = 1024; // размер буфера - 1 КБ
+	char buffer[SIZE] = {};
+	cin >> buffer;
+	obj = buffer;
+	return cin;
+}
+std::istream& getline(std::istream& cin, String& obj)
+{
+	cin.getline(obj.get_str(), obj.get_size());
+	return cin;
+}
+
 //#define CONSTRUCTOR_CHECK
+//#define OPERATOR_PLUS
 
 void main()
 {
-	setlocale(LC_ALL, " ");
+	setlocale(LC_ALL, "");
 
 #ifdef CONSTRUCTOR_CHECK
 	String str1(5);// excplisit - constructor нельзя вызвать оператором присвоить, можно вызвать круглых скобок
@@ -124,9 +140,21 @@ void main()
 	cout << str4 << endl;
 #endif // CONSTRUCTOR_CHECK
 
+#ifdef OPERATOR_PLUS
 	String str1 = "Hello";
 	String str2 = "World";
 	String str3 = str1 + " " + str2;
 	cout << str3 << endl;
+
+#endif // OPERATOR_PLUS
+
+	String str;
+	cout << "Введите строку: ";
+	SetConsoleCP(1251);
+	//cin >> str;
+	//cin.getline(str.get_str(), str.get_size());
+	getline(cin, str);
+	SetConsoleCP(866);
+	cout << str << endl;
 
 }
