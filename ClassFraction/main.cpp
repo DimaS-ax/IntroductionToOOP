@@ -58,7 +58,19 @@ public:
 		cout << "SingleArgConstruction:\t" << this << endl;
 	}
 
-	Fraction(double num)
+	Fraction(double decimal)
+	{
+		//decimal - десятичный
+		decimal += 1e-10; /*.0000000001;*/
+		integer = decimal;//неявное преобразование типов из double в int
+		decimal -= integer;
+		denominator = 1e+9; /*1000000000*/// максимально возможное значение чеслителя 9 десятичных разрядов
+		//e - Exponent (основание системы счисления)
+		numerator = decimal * denominator;
+		reduce();
+	}
+
+	/*Fraction(double num)
 	{
 		int NUM = (int)num;
 		double res = num - NUM;
@@ -70,7 +82,7 @@ public:
 		this->integer = NUM;
 		this->numerator = numerator;
 		this->denominator = denominator;
-	}
+	}*/
 
 	Fraction(int numerator, int denominator)
 	{
@@ -186,6 +198,30 @@ public:
 			denominator = -denominator;
 			numerator = -numerator;
 		}
+	}
+	Fraction& reduce()
+	{
+		int more, less, rest;
+		if (numerator < denominator)
+		{
+			less = numerator;
+			more = denominator;
+		}
+		else
+		{
+			more = numerator;
+			less = denominator;
+		}
+		do
+		{
+			rest = more % less;
+			more = less;
+			less = rest;
+		} while (rest);
+		int GCD = more;// GCD - Greatest Common Divisor
+		numerator /= GCD;
+		denominator /= GCD;
+		return *this;
 	}
 
 	void Print()const
@@ -332,7 +368,7 @@ std::istream& operator >>(std::istream& is,  Fraction& obj)
 //#define ISTREAM_OPERATORS
 //#define CONVERSION_BASICS
 //#define CONVERSION_FROM_OTHER_TO_CLASS
-#define DECIMAL_TO_FRACTION
+//#define DECIMAL_TO_FRACTION
 void main()
 {
 	setlocale(LC_ALL, "ru");
@@ -434,6 +470,9 @@ void main()
 	cout << B << endl;
 
 #endif // DECIMAL_TO_FRACTION
+
+	Fraction A = 2.76;
+	cout << A << endl;
 
 
 }
