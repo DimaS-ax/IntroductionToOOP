@@ -5,6 +5,8 @@ using std::cout;
 using std::endl;
 using std::cin;
 
+#define delimetr "--------------------------"
+
 class String
 {
 	int size;//Размер строки в байтах
@@ -48,6 +50,16 @@ public:
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:\t" << this << endl;
 	}
+
+	String(String&& other)
+	{
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveConstructor:\t" << this << endl;
+	}
+
 	~String()
 	{
 		delete[] str;
@@ -64,6 +76,18 @@ public:
 		this->str = new char[size] {};
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyAssignment:\t\t" << this << endl;
+		return *this;
+	}
+
+	String& operator=(String&& other)
+	{
+		if (this == &other)return *this;
+		delete[] this->str;
+		this->size = other.size;
+		this->str = other.str;
+		other.size = 0;
+		other.str = nullptr;
+		cout << "MoveAssignment:\t\t" << this << endl;
 		return *this;
 	}
 
@@ -94,6 +118,7 @@ String operator+(const String& left, const String& right)
 	for (int i = 0; right.get_str()[i]; i++)
 		//result.get_str()[left.get_size() - 1 + i] = right.get_str()[i];
 	    result[left.get_size() - 1 + i] = right[i];
+	cout << "Operator +" << endl;
 	return result;
 }
 
@@ -118,6 +143,7 @@ std::istream& getline(std::istream& cin, String& obj)
 
 //#define CONSTRUCTOR_CHECK
 //#define OPERATOR_PLUS
+//#define ISTREAM_OPERATOR
 
 void main()
 {
@@ -143,11 +169,15 @@ void main()
 #ifdef OPERATOR_PLUS
 	String str1 = "Hello";
 	String str2 = "World";
-	String str3 = str1 + " " + str2;
+	cout << delimetr << endl;
+	String str3;
+	str3 = str1 + str2;
+	cout << delimetr << endl;
 	cout << str3 << endl;
 
 #endif // OPERATOR_PLUS
 
+#ifdef ISTREAM_OPERATOR
 	String str;
 	cout << "Введите строку: ";
 	SetConsoleCP(1251);
@@ -156,5 +186,7 @@ void main()
 	getline(cin, str);
 	SetConsoleCP(866);
 	cout << str << endl;
+
+#endif // ISTREAM_OPERATOR
 
 }
