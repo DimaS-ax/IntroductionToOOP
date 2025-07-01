@@ -1,5 +1,8 @@
 ﻿#include<iostream>
 using namespace std;
+using std::cout;
+using std::endl;
+using std::cin;
 
 class String
 {
@@ -14,6 +17,10 @@ public:
 	{
 		return str;
 	}
+	char* get_str()
+	{
+		return str;
+	}
 	// Constructors
 	explicit String(int size = 80)
 	{
@@ -23,6 +30,7 @@ public:
 	}
 	String(const char str[])
 	{
+		size = 0;
 		while (str[size++]);
 		this->str = new char[size] {};
 		for (int i = 0; str[i]; i++)this->str[i] = str[i];
@@ -58,6 +66,15 @@ public:
 		return *this;
 	}
 
+	const char& operator[](int i)const
+	{
+		return str[i];
+	}
+	char& operator[](int i)
+	{
+		return str[i];
+	}
+
 	//Methods
 
 	void info()const
@@ -67,15 +84,31 @@ public:
 	}
 };
 
+String operator+(const String& left, const String& right)
+{
+	String result  (left.get_size() + right.get_size() - 1);
+	for (int i = 0; left.get_str()[i]; i++)
+		//result.get_str()[i] = left.get_str()[i];
+		result[i] = left[i];
+	for (int i = 0; right.get_str()[i]; i++)
+		//result.get_str()[left.get_size() - 1 + i] = right.get_str()[i];
+	    result[left.get_size() - 1 + i] = right[i];
+	return result;
+}
+
 std::ostream& operator<<(std::ostream& os, const String& obj)
 {
 	return os << obj.get_str();
 }
 
+//#define CONSTRUCTOR_CHECK
+
 void main()
 {
 	setlocale(LC_ALL, " ");
-	String str1 (5);// excplisit - constructor нельзя вызвать оператором присвоить, можно вызвать круглых скобок
+
+#ifdef CONSTRUCTOR_CHECK
+	String str1(5);// excplisit - constructor нельзя вызвать оператором присвоить, можно вызвать круглых скобок
 	str1.info();
 	cout << str1 << endl;
 
@@ -89,5 +122,11 @@ void main()
 	String str4;
 	str4 = str3;
 	cout << str4 << endl;
+#endif // CONSTRUCTOR_CHECK
+
+	String str1 = "Hello";
+	String str2 = "World";
+	String str3 = str1 + " " + str2;
+	cout << str3 << endl;
 
 }
