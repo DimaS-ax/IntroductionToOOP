@@ -9,88 +9,113 @@ using std::cin;
 
 class String
 {
-	int size;//Размер строки в байтах
-	char* str;//Указатель на строку в динамической памяти
+	int size;
+	char* str;
 public:
-	int get_size()const
-	{
-		return size;
-	}
-	const char* get_str()const
-	{
-		return str;
-	}
-	char* get_str()
-	{
-		return str;
-	}
+	int get_size()const;
+	const char* get_str()const;
+	char* get_str();
 	// Constructors
-	explicit String(int size = 80):size(size),str(new char[this->size]{})
-	{
-		cout << "DefaultConstructor:\t" << this << endl;
-	}
-	String(const char str[]):String(strlen(str)+1)
-	{
-		for (int i = 0; str[i]; i++)this->str[i] = str[i];
-		cout << "Constructor:\t\t" << this << endl;
-	}
-	String(const String& other):String(other.str)
-	{
-		cout << "CopyConstructor:\t" << this << endl;
-	}
-
-	String(String&& other):size(other.size),str(other.str)
-	{
-		other.size = 0;
-		other.str = nullptr;
-		cout << "MoveConstructor:\t" << this << endl;
-	}
-
-	~String()
-	{
-		delete[] str;
-		this->str = nullptr;
-		this->size = 0;
-		cout << "Destructor:\t\t" << this << endl;
-	}
+	explicit String(int size = 80);
+	String(const char str[]);
+	String(const String& other);
+	String(String&& other);
+	~String();
 	//Operators
-	String& operator=(const String& other)
-	{
-		if (this == &other)return *this;
-		delete[] this->str;
-		this->size = other.size;
-		this->str = new char[size] {};
-		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
-		cout << "CopyAssignment:\t\t" << this << endl;
-		return *this;
-	}
-
-	String& operator=(String&& other)
-	{
-		if (this == &other)return *this;
-		delete[] this->str;
-		this->size = other.size;
-		this->str = other.str;
-		other.size = 0;
-		other.str = nullptr;
-		cout << "MoveAssignment:\t\t" << this << endl;
-		return *this;
-	}
+	String& operator=(const String& other);
+	String& operator=(String&& other);
 	//Methods
-	const char& operator[](int i)const
-	{
-		return str[i];
-	}
-	char& operator[](int i)
-	{
-		return str[i];
-	}
-	void info()const
-	{
-		cout << "Size:\t" << size << endl;
-		cout << "Str:\t" << str << endl;
-	}
+	const char& operator[](int i)const;
+	char& operator[](int i);
+	void info()const;
+
 };
+
+
+
+int String:: get_size()const
+{
+	return size;
+}
+const char* String:: get_str()const
+{
+	return str;
+}
+char* String:: get_str()
+{
+	return str;
+}
+// Constructors
+/*Ключевое слово 'explicit' использовать только в загаловке конструктора*/
+String:: String(int size) :size(size), str(new char[this->size] {})
+{
+	cout << "DefaultConstructor:\t" << this << endl;
+}
+// :: - Scope operator (Оператор разрешение видимости)
+String::String(const char str[]) :String(strlen(str) + 1)
+{
+	for (int i = 0; str[i]; i++)this->str[i] = str[i];
+	cout << "Constructor:\t\t" << this << endl;
+}
+String::String(const String& other) :String(other.str)
+{
+	cout << "CopyConstructor:\t" << this << endl;
+}
+
+String::String(String&& other) :size(other.size), str(other.str)
+{
+	other.size = 0;
+	other.str = nullptr;
+	cout << "MoveConstructor:\t" << this << endl;
+}
+
+String::~String()
+{
+	delete[] str;
+	this->str = nullptr;
+	this->size = 0;
+	cout << "Destructor:\t\t" << this << endl;
+}
+//Operators
+String& String::operator=(const String& other)
+{
+	if (this == &other)return *this;
+	delete[] this->str;
+	this->size = other.size;
+	this->str = new char[size] {};
+	for (int i = 0; i < size; i++)this->str[i] = other.str[i];
+	cout << "CopyAssignment:\t\t" << this << endl;
+	return *this;
+}
+
+String& String::operator=(String&& other)
+{
+	if (this == &other)return *this;
+	delete[] this->str;
+	this->size = other.size;
+	this->str = other.str;
+	other.size = 0;
+	other.str = nullptr;
+	cout << "MoveAssignment:\t\t" << this << endl;
+	return *this;
+}
+//Methods
+const char& String::operator[](int i)const
+{
+	return str[i];
+}
+char& String::operator[](int i)
+{
+	return str[i];
+}
+void String::info()const
+{
+	cout << "Size:\t" << size << endl;
+	cout << "Str:\t" << str << endl;
+}
+
+
+
 
 String operator+(const String& left, const String& right)
 {
