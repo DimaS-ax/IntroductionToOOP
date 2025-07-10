@@ -33,6 +33,7 @@ public:
 	}
 	String(const char str[])
 	{
+		cout << typeid(str).name() << endl;
 		size = 0;
 		while (str[size++]);
 		this->str = new char[size] {};
@@ -188,5 +189,30 @@ void main()
 	cout << str << endl;
 
 #endif // ISTREAM_OPERATOR
+
+	String str1;   //Default constructor
+	str1.info();
+
+	String str2(8);  // Single-argument constructor ('int')
+	str2.info();
+
+	String str3 = "Hello"; //Singe-argument constructor ('const char')
+	str3.info();
+	cout << typeid("Hello").name() << endl;
+
+	String str4(); // Default constructor
+	/*Не вызывается ни какой конструктор, ни создается ни какой обьект
+	Здесь происходит обьявление функции, которая ничего не принимает
+	и возвращает обьект типа 'String'
+	Пустые круглые скобки не вызывают конструктор*/
+	//str4.
+	/*Если нужно явно вызвать Default-constructor,это можно сделать {} */
+	String str5(8); //Создается строка длиной 8 байт
+	String str6{ 8 }; //Создается строка длиной 8 байт,т. е. {} вызывают конструктор.
+	String str7{}; //Явный вызов конструктора по умолчанию
+	/*{} Следует использовать с осторожностью */
+
+	String str9 = str3; //Коструктор копирования
+
 
 }
