@@ -25,37 +25,37 @@ public:
 		return str;
 	}
 	// Constructors
-	explicit String(int size = 80)
+	explicit String(int size = 80):size(size),str(new char[this->size]{})
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		/*this->str = new char[size] {};*/
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	String(const char str[])
+	String(const char str[]):size(strlen(str)+1),str(new char[size]{})
 	{
 		cout << typeid(str).name() << endl;
-		size = 0;
-		while (str[size++]);
-		this->str = new char[size] {};
+		//size = 0;
+		//while (str[size++]);
+		//this->str = new char[size] {};
 		for (int i = 0; str[i]; i++)this->str[i] = str[i];
 		cout << "Constructor:\t\t" << this << endl;
 	}
-	String(const String& other)
+	String(const String& other):size(other.size),str(new char[size]{})
 	{
 		/*Конструктор копирования должен выполнять DeepCopy(Побитовое копирование)
 	      т.е. вделять динамическую память под лбьект и побитово (поэлементно)
 		  копировать содержимое динамической памяти из существующего обьекта в создаваемый
 	     */
-		this->size = other.size;
-		this->str = new char[size] {};
+		/*this->size = other.size;
+		this->str = new char[size] {};*/
 		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:\t" << this << endl;
 	}
 
-	String(String&& other)
+	String(String&& other):size(other.size),str(other.str)
 	{
-		this->size = other.size;
-		this->str = other.str;
+		/*this->size = other.size;
+		this->str = other.str;*/
 		other.size = 0;
 		other.str = nullptr;
 		cout << "MoveConstructor:\t" << this << endl;
@@ -91,7 +91,7 @@ public:
 		cout << "MoveAssignment:\t\t" << this << endl;
 		return *this;
 	}
-
+	//Methods
 	const char& operator[](int i)const
 	{
 		return str[i];
@@ -100,9 +100,6 @@ public:
 	{
 		return str[i];
 	}
-
-	//Methods
-
 	void info()const
 	{
 		cout << "Size:\t" << size << endl;
@@ -122,12 +119,10 @@ String operator+(const String& left, const String& right)
 	cout << "Operator +" << endl;
 	return result;
 }
-
 std::ostream& operator<<(std::ostream& os, const String& obj)
 {
 	return os << obj.get_str();
 }
-
 std::istream& operator>>(std::istream& cin, String& obj)
 {
 	const int SIZE = 1024; // размер буфера - 1 КБ
@@ -143,8 +138,9 @@ std::istream& getline(std::istream& cin, String& obj)
 }
 
 //#define CONSTRUCTOR_CHECK
-//#define OPERATOR_PLUS
+#define OPERATOR_PLUS
 //#define ISTREAM_OPERATOR
+//#define CALLING_CONSTRUCTOR
 
 void main()
 {
@@ -190,6 +186,7 @@ void main()
 
 #endif // ISTREAM_OPERATOR
 
+#ifdef CALLING_CONSTRUCTOR
 	String str1;   //Default constructor
 	str1.info();
 
@@ -213,6 +210,8 @@ void main()
 	/*{} Следует использовать с осторожностью */
 
 	String str9 = str3; //Коструктор копирования
+	str9.info();
+#endif // CALLING_CONSTRUCTOR
 
 
 }
