@@ -27,35 +27,20 @@ public:
 	// Constructors
 	explicit String(int size = 80):size(size),str(new char[this->size]{})
 	{
-		//this->size = size;
-		/*this->str = new char[size] {};*/
 		cout << "DefaultConstructor:\t" << this << endl;
 	}
-	String(const char str[]):size(strlen(str)+1),str(new char[size]{})
+	String(const char str[]):String(strlen(str)+1)
 	{
-		cout << typeid(str).name() << endl;
-		//size = 0;
-		//while (str[size++]);
-		//this->str = new char[size] {};
 		for (int i = 0; str[i]; i++)this->str[i] = str[i];
 		cout << "Constructor:\t\t" << this << endl;
 	}
-	String(const String& other):size(other.size),str(new char[size]{})
+	String(const String& other):String(other.str)
 	{
-		/*Конструктор копирования должен выполнять DeepCopy(Побитовое копирование)
-	      т.е. вделять динамическую память под лбьект и побитово (поэлементно)
-		  копировать содержимое динамической памяти из существующего обьекта в создаваемый
-	     */
-		/*this->size = other.size;
-		this->str = new char[size] {};*/
-		for (int i = 0; i < size; i++)this->str[i] = other.str[i];
 		cout << "CopyConstructor:\t" << this << endl;
 	}
 
 	String(String&& other):size(other.size),str(other.str)
 	{
-		/*this->size = other.size;
-		this->str = other.str;*/
 		other.size = 0;
 		other.str = nullptr;
 		cout << "MoveConstructor:\t" << this << endl;
@@ -171,6 +156,10 @@ void main()
 	str3 = str1 + str2;
 	cout << delimetr << endl;
 	cout << str3 << endl;
+	cout << delimetr << endl;
+	String str4 = str3;
+	cout << str4 << endl;
+	cout << delimetr << endl;
 
 #endif // OPERATOR_PLUS
 
