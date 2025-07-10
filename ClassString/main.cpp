@@ -4,9 +4,12 @@ using namespace std;
 using std::cout;
 using std::endl;
 using std::cin;
-
 #define delimetr "--------------------------"
 
+
+/*Обьявление Класса - Class Declaration*/
+class String;
+String operator+(const String& left, const String& right);
 class String
 {
 	int size;
@@ -24,14 +27,21 @@ public:
 	//Operators
 	String& operator=(const String& other);
 	String& operator=(String&& other);
+	String& operator+=(const String& other);
 	//Methods
 	const char& operator[](int i)const;
 	char& operator[](int i);
 	void info()const;
-
 };
+/*Конец обьявления класса - Class Declaration end*/
 
 
+
+/// ----------------------------------------------------------///
+
+
+
+/*Определение Класса - Class definition*/
 
 int String:: get_size()const
 {
@@ -99,6 +109,10 @@ String& String::operator=(String&& other)
 	cout << "MoveAssignment:\t\t" << this << endl;
 	return *this;
 }
+String& String::operator+=(const String& other)
+{
+	return *this = *this + other;
+}
 //Methods
 const char& String::operator[](int i)const
 {
@@ -113,9 +127,6 @@ void String::info()const
 	cout << "Size:\t" << size << endl;
 	cout << "Str:\t" << str << endl;
 }
-
-
-
 
 String operator+(const String& left, const String& right)
 {
@@ -146,6 +157,10 @@ std::istream& getline(std::istream& cin, String& obj)
 	cin.getline(obj.get_str(), obj.get_size());
 	return cin;
 }
+
+/*Конец определения класса - Class definition end*/
+
+
 
 //#define CONSTRUCTOR_CHECK
 #define OPERATOR_PLUS
